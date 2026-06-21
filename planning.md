@@ -135,18 +135,18 @@ For each tool, describe the specific failure mode you're handling and what the a
 
 ## A Complete Interaction (Step by Step)
 
-Write out what a full user interaction looks like from start to finish — tool call by tool call. Use a specific example query.
+FitFindr is an AI agent that orchestrates a multi-step thrifting workflow. It first uses `search_listings` to find items matching a user's constraints, passes any found item to `suggest_outfit` to style it with their existing wardrobe, and finally calls `create_fit_card` to generate a shareable caption. If a tool fails (like `search_listings` returning zero results), the agent halts the sequence and alerts the user to adjust their search instead of passing empty data forward.
 
 **Example user query:** "I'm looking for a vintage graphic tee under $30. I mostly wear baggy jeans and chunky sneakers. What's out there and how would I style it?"
 
 **Step 1:**
-<!-- What does the agent do first? Which tool is called? With what input? -->
+The agent calls `search_listings(description="vintage graphic tee", size=None, max_price=30.0)` to find matching items from the dataset.
 
 **Step 2:**
-<!-- What happens next? What was returned from step 1? What tool is called now? -->
+The agent takes the top returned listing and calls `suggest_outfit(new_item=<top_listing_dict>, wardrobe=<user_wardrobe_dict>)` to generate styling advice using the baggy jeans and chunky sneakers.
 
 **Step 3:**
-<!-- Continue until the full interaction is complete -->
+The agent calls `create_fit_card(outfit=<outfit_string>, new_item=<top_listing_dict>)` to generate a short social media caption about the thrifted find.
 
 **Final output to user:**
-<!-- What does the user actually see at the end? -->
+The user sees the top listing details, a paragraph of personalized styling advice incorporating their wardrobe, and a short, shareable fit card caption.
